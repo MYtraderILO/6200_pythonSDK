@@ -52,7 +52,7 @@ try:
     # 发送交易，调用一个改写数据的接口
     print("\n>>sendRawTransaction:----------------------------------------------------")
     to_address = result['contractAddress']  # use new deploy address
-    args = ['simplename', 2024, to_checksum_address('0x7029c502b4F824d19Bd7921E9cb74Ef92392FB1c')]
+    args = ['simplename', 2024, to_checksum_address('0x2cfa8b7979731e4bd34f65333ad2fc71f489b90b793036a7241ed1279e63f54e')]
 
     receipt = client.sendRawTransactionGetReceipt(to_address, contract_abi, "set", args)
     print("receipt:", receipt)

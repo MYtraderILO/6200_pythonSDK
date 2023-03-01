@@ -14,8 +14,10 @@
 
 """
 
+import os
 import sys
-
+os.chdir(r'C:\Users\32179\Desktop\CityU\6200\project\solidity\python_sdk')
+sys.path.append(r'C:\Users\32179\Desktop\CityU\6200\project\solidity\python_sdk')
 from console_utils.cmd_account import CmdAccount
 from console_utils.cmd_encode import CmdEncode
 from console_utils.cmd_transaction import CmdTransaction
