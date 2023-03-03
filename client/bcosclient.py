@@ -327,7 +327,7 @@ class BcosClient:
         cmd = "getTransactionByBlockHashAndIndex"
         common.check_hash(hash)
         common.check_int_range(index)
-        params = [self.groupid, hash, hex(index)]
+        params = [self.groupid, hash, index]
         return self.common_request(cmd, params)
 
     # https://fisco-bcos-documentation.readthedocs.io/zh_CN/release-2.0/docs/api.html#gettransactionbyblocknumberandindex
