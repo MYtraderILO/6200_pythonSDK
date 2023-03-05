@@ -49,6 +49,7 @@ def decode_call_getTraceInfo(data, print_out=False):
 
 # 找到所有的 event 信息
 def get_all_create_Info():
+    client = BcosClient()
     hash_value = []
     decode_result = []
     out_value = []
@@ -63,6 +64,7 @@ def get_all_create_Info():
         if len(decode_info) > 0:
             if 'eventname' in decode_info[0]:
                 out_value.append(decode_info[0]['eventdata'])
+    client.finish()
     return out_value
 
 
