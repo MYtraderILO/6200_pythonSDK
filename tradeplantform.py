@@ -22,6 +22,7 @@ abi_file = "contracts/Base.abi"
 data_parser = DatatypeParser()
 data_parser.load_abi_file(abi_file)
 
+
 def decode_call_getTraceInfo(data, print_out=False):
     dic = {}
     index = 0
@@ -38,16 +39,17 @@ def decode_call_getTraceInfo(data, print_out=False):
         print('共有记录{}行'.format(index))
         for each_info in dic:
             print('信息{} 操作者地址:{}  拥有者信息:{} 拥有者地址{} \n 存放仓库id{} 货品id{} 货品重量{} 货品数量{} \n 质检日期{} 上链时间{} 仓单状态:{} 其他信息{}'.format(each_info, dic[each_info]['owner_address'], dic[each_info]['owner_id'],
-                                                                                                                      dic[each_info]['owner_address'], dic[each_info]['settel_Id'],
-                                                                                                                      dic[each_info]['commodityId'],
-                                                                                                                      dic[each_info]['commodityWeight'],
-                                                                                                                      dic[each_info]['commodityAmount'],
-                                                                                                                      dic[each_info]['quality_date'],
-                                                                                                                      dic[each_info]['list_date'],
-                                                                                                                      dic[each_info]['sting_info'],
-                                                                                                                      dic[each_info]['receipt_state']))
+                                                                                                                            dic[each_info]['owner_address'], dic[each_info]['settel_Id'],
+                                                                                                                            dic[each_info]['commodityId'],
+                                                                                                                            dic[each_info]['commodityWeight'],
+                                                                                                                            dic[each_info]['commodityAmount'],
+                                                                                                                            dic[each_info]['quality_date'],
+                                                                                                                            dic[each_info]['list_date'],
+                                                                                                                            dic[each_info]['sting_info'],
+                                                                                                                            dic[each_info]['receipt_state']))
 
     return index, dic
+
 
 # 找到所有的 event 信息
 def get_all_create_Info():
@@ -96,4 +98,36 @@ def getReceiptTraceInfo(receipt_id, pri=False):
         return decode_info
 
     except:
-        print('Fall to get the information')
+        print('Fail to get the information')
+
+
+def createNewReceipt(args):
+    result = 'query error'
+    try:
+        demo_config = client_config
+        abi_file = "contracts/Base.abi"
+        data_parser = DatatypeParser()
+        data_parser.load_abi_file(abi_file)
+        client = BcosClient()
+        print(client.getinfo())
+        # 部署合约
+        # user_address = '0xa1bec288a3757996b2b84fcd04c0747a527196ab'
+        contract_address = '0xa1f31739948aa3a4061286498ebb1b70ce8bbf9f'
+        args = [3, '0x5B38Da6a701c568545dCfcB03FcB875f56beddC4' ,3 ,3 ,4 ,5 ,6 ,'8']
+        result = client.sendRawTransactionGetReceipt(contract_address, data_parser.contract_abi, 'createReceipt', args)
+        client.finish()
+
+        print("Successfully create receipts")
+
+        print(result)
+
+        return True
+    txhash = result['transactionHash']
+    txresponse = client.getTransactionByHash(txhash)
+    inputresult = data_parser.parse_transaction_input(txresponse['input'])
+    outputresult = data_parser.parse_receipt_output(inputresult['name'], result['output'])
+    except:
+        print(result)
+        print("Fail to create receipts")
+        return False
+

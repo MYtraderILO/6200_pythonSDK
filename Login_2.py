@@ -8,7 +8,7 @@ class login(object):
     def __init__(self, master=None):
         self.root = master  # 定义内部变量root
         self.root.geometry('600x400+222+111')
-        self.root.title('登录窗口')
+        self.root.title('Login')
         self.creatlogin()
 
     def creatlogin(self):
@@ -16,20 +16,21 @@ class login(object):
         self.fr1.pack()
         new_name = StringVar()  # 将输入的注册名赋值给变量
         new_name.set('@Meta.com')
+        Label(self.fr1, text='Login', font=('microsoft yahei', 20, 'bold')).grid(row=0, columnspan=2)
         self.lab1 = Label(self.fr1, text='User Account: ')
-        self.lab1.pack(pady=10)
+        self.lab1.grid(row=1, column=0, pady=40)
         self.en2 = Entry(self.fr1, textvariable=new_name)
-        self.en2.pack(pady=10, fill=X)
+        self.en2.grid(row=1, column=1, pady=40)
         self.lab1 = Label(self.fr1, text='User Password: ')
-        self.lab1.pack(pady=10)
+        self.lab1.grid(row=2, column=0, pady=15)
         self.en1 = Entry(self.fr1)
-        self.en1.pack(pady=10, fill=X)
+        self.en1.grid(row=2, column=1, pady=15)
 
         self.but1 = Button(self.fr1, text="Login", command=self.usr_log_in)
-        self.but1.pack(side=LEFT)
+        self.but1.grid(row=3, column=0, pady=20)
 
         self.but2 = Button(self.fr1, text="Sign up", command=self.usr_sign_up)
-        self.but2.pack(side=RIGHT)
+        self.but2.grid(row=3, column=1, pady=20)
         self.en1.focus_set()  # 获得焦点
 
     def usr_log_in(self):
@@ -129,9 +130,9 @@ class home():
 
         menubar = Menu(self.root)
         A = Menu(menubar, tearoff=0)
-        menubar.add_cascade(label='操作', menu=A)
+        menubar.add_cascade(label='Operation', menu=A)
         A.add_command(label='Get Receipt Trace', command=self.get_receipt_trace)
-        A.add_command(label='考勤管理', command=self.gotokao)
+        A.add_command(label='Create Receipts', command=self.get_create_receipt)
         A.add_command(label='工资管理', command=self.gotogong)
         # A.add_command(label='关于',command=self.about)
         A.add_command(label='关于', command=about)
@@ -156,34 +157,34 @@ class home():
 
     def get_receipt_trace(self):  # 执行人员管理菜单
         if self.jobtxt != 'Get Receipt Trace':  # 根据窗体标题来决定否则执行这个菜单功能
-            if self.jobtxt == '考勤管理':  # 如果要切换，就先根据窗体标签把现在的框架卸载掉
-                self.kaopage.destroy()
+            if self.jobtxt == 'Creat Receipt':  # 如果要切换，就先根据窗体标签把现在的框架卸载掉
+                self.create_receipt_page.destroy()
             if self.jobtxt == '工资管理':  # 如果要切换，就先根据窗体标签把现在的框架卸载掉
                 self.gongpage.destroy()
 
-            self.renpage = getReceiptTrace(self.root)  # 调用job.py的ren类，显示人事管理界面
-            self.renpage.pack()
+            self.get_Receipt_page = getReceiptTrace(self.root)  # 调用job.py的ren类，显示人事管理界面
+            self.get_Receipt_page.pack()
             self.root.title('Get Receipt Trace')
             self.jobtxt = 'Get Receipt Trace'  # 记下窗体标题
 
-    def gotokao(self):  # 执行考勤管理菜单
-        if self.jobtxt != '考勤管理':
-            if self.jobtxt == '人事管理':
-                self.renpage.destroy()
+    def get_create_receipt(self):  # 执行考勤管理菜单
+        if self.jobtxt != 'Creat Receipt':
+            if self.jobtxt == 'Get Receipt Trace':
+                self.get_Receipt_page.destroy()
             if self.jobtxt == '工资管理':
                 self.gongpage.destroy()
 
-            self.kaopage = kao(self.root)
-            self.kaopage.pack()
-            self.root.title('考勤管理')
-            self.jobtxt = '考勤管理'
+            self.create_receipt_page = create_receipt(self.root)
+            self.create_receipt_page.pack()
+            self.root.title('Creat Receipt')
+            self.jobtxt = 'Creat Receipt'
 
     def gotogong(self):  # 执行工资管理菜单
         if self.jobtxt != '工资管理':
-            if self.jobtxt == '考勤管理':
-                self.kaopage.destroy()
-            if self.jobtxt == '人事管理':
-                self.renpage.destroy()
+            if self.jobtxt == 'Creat Receipt':
+                self.create_receipt_page.destroy()
+            if self.jobtxt == 'Get Receipt Trace':
+                self.get_Receipt_page.destroy()
 
             self.gongpage = gong(self.root)
             self.gongpage.pack()
@@ -204,16 +205,16 @@ class getReceiptTrace(Frame):  # 继承Frame类
         self.creatInfo()
 
     def creatInfo(self):
-        la1 = Label(self, text='Get Receipts Trace')
-        la1.pack(pady=20)
+        la1 = Label(self, text='Get Receipts Trace', font=('microsoft yahei', 20, 'bold'))
+        la1.grid(row=0, columnspan=2)
         txt1 = Label(self, text='Receipt Id :')
-        txt1.pack(pady=20)
+        txt1.grid(row=1, column=0, pady=20)
         self.en1 = Entry(self, text='Get Receipts Trace')
-        self.en1.pack(pady=10)
+        self.en1.grid(row=1, column=1, pady=20)
         self.bt1 = Button(self, text='Look up', command=self.cmd_receipt)
-        self.bt1.pack(side=LEFT)
+        self.bt1.grid(row=2, column=0, pady=20)
         self.bt2 = Button(self, text='Show Result', command=self.show_result)
-        self.bt2.pack(side=RIGHT)
+        self.bt2.grid(row=2, column=1, pady=20)
 
     def cmd_receipt(self):
         receipt_id = int(self.en1.get())
@@ -292,16 +293,69 @@ class getReceiptTrace(Frame):  # 继承Frame类
 
             Label(window_show_receipt, text='page: {} / {}'.format(self.page, self.index)).place(x=300, y=300)
 
-class kao(Frame):
+class create_receipt(Frame):
+
     def __init__(self, master=None):
         Frame.__init__(self, master)
         self.root = master
-        self.creatkao()
+        self.creat_UI()
 
-    def creatkao(self):
-        la1 = Label(self, text='这里是考勤管理界面')
-        la1.pack()
+    def creat_UI(self):
+        Label(self, text='Create Receipts Functions ', font=('microsoft yahei', 20, 'bold')).grid(row=0, columnspan=2)
 
+        Label(self, text='Receipt ID: ').grid(row=1, column=0)
+        self.entry_receipt_id = Entry(self)
+        self.entry_receipt_id.grid(row=1, column=1)
+
+        Label(self, text='Owner Address: ').grid(row=2, column=0)
+        self.entry_ownerAddress = Entry(self)
+        self.entry_ownerAddress.grid(row=2, column=1)
+
+        Label(self, text='Commodity Id: ').grid(row=3, column=0)
+        self.entry_Commodity_id = Entry(self)
+        self.entry_Commodity_id.grid(row=3, column=1)
+
+        Label(self, text='Commodity Weight: ').grid(row=4, column=0)
+        self.entry_commodity_weight = Entry(self)
+        self.entry_commodity_weight.grid(row=4, column=1)
+
+        Label(self, text='Commodity Amount: ').grid(row=5, column=0)
+        self.entry_commodityAmount = Entry(self)
+        self.entry_commodityAmount.grid(row=5, column=1)
+
+        Label(self, text='Settel Id: ').grid(row=6, column=0)
+        self.entry_settelId = Entry(self)
+        self.entry_settelId.grid(row=6, column=1)
+
+        Label(self, text='Quality Date: ').grid(row=7, column=0)
+        self.entry_qualityDate = Entry(self)
+        self.entry_qualityDate.grid(row=7, column=1)
+
+        new_create = StringVar()  # 将输入的注册名赋值给变量
+        new_create.set('First Create Receipts')  # 将最初显示定为'example@python.com'
+        Label(self, text='Other Info: ').grid(row=8, column=0)
+        self.entry_other_Info = Entry(self, textvariable=new_create)
+        self.entry_other_Info.grid(row=8, column=1)
+
+        Button(self, text='Create', command=self.sendCreation).grid(row=9, column=1)
+
+    def sendCreation(self):
+
+        entry_receipt_id = self.entry_receipt_id.get()
+        entry_ownerAddress = self.entry_ownerAddress.get()
+        entry_Commodity_id = self.entry_Commodity_id.get()
+        entry_commodity_weight = self.entry_commodity_weight.get()
+        entry_commodityAmount = self.entry_commodityAmount.get()
+        entry_settelId = self.entry_settelId.get()
+        entry_qualityDate = self.entry_qualityDate.get()
+        entry_other_Info = self.entry_other_Info.get()
+
+        if trd.createNewReceipt([int(entry_receipt_id), str(entry_ownerAddress), int(entry_Commodity_id), int(entry_commodity_weight),
+                              int(entry_commodityAmount), int(entry_settelId), int(entry_qualityDate), str(entry_other_Info)]):
+            messagebox.showinfo(title='Create Result', message='Successfully create receipts \n Receipt ID : {}'.format(entry_receipt_id))
+
+        else:
+            messagebox.showerror(title='Create Result', message='Fail to create receipts \n Receipt ID : {}'.format(entry_receipt_id))
 
 class gong(Frame):
     def __init__(self, master=None):
@@ -323,7 +377,7 @@ def about():
     la1.pack(pady=10)
     la2 = Label(top1, text='Contact with us: +852 110')
     la2.pack(pady=10)
-    but1 = Button(top1, text="  确 定  ", command=top1.destroy)
+    but1 = Button(top1, text="  O K  ", command=top1.destroy)
     but1.pack(side=BOTTOM, pady=10)
 
     top1.attributes("-toolwindow", 1)  # 无最大化，最小化
