@@ -132,19 +132,20 @@ class DatatypeParser:
         result['signature'] = abi_to_signature(func_abi)
         return result
 
-    def parse_output(self,name,outputdata):
+    def parse_output(self, name, outputdata):
         if name not in self.func_abi_map_by_name:
             return None
         func_abi = self.func_abi_map_by_name[name]
+        print(func_abi)
         output_args = get_fn_abi_types_single(func_abi, "outputs")
-        # print(output_args)
+        print(output_args)
         result = decode_single(output_args, decode_hex(outputdata))
         return result
 
     # 用于receipt，解析合约接口的返回值
     # 取决于接口定义
     def parse_receipt_output(self, name, outputdata):
-        return self.parse_output(name,outputdata)
+        return self.parse_output(name, outputdata)
 
     def get_function_abi(self, fn_name):
         if fn_name not in self.func_abi_map_by_name:
@@ -152,7 +153,7 @@ class DatatypeParser:
         fn_abi = self.func_abi_map_by_name[fn_name]
         return fn_abi
 
-    def types_if_tuple(self,abi):
+    def types_if_tuple(self, abi):
         """Converts a tuple from a dict to a parenthesized list of its types.
         >>> from eth_utils.abi import collapse_if_tuple
         >>> collapse_if_tuple(

@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 import pickle
-import python_sdk.tradeplantform as trd
+import tradeplantform as trd
 
 
 class login(object):
@@ -133,27 +133,27 @@ class home():
         menubar.add_cascade(label='Operation', menu=A)
         A.add_command(label='Get Receipt Trace', command=self.get_receipt_trace)
         A.add_command(label='Create Receipts', command=self.get_create_receipt)
-        A.add_command(label='工资管理', command=self.gotogong)
+        # A.add_command(label='工资管理', command=self.gotogong)
         # A.add_command(label='关于',command=self.about)
-        A.add_command(label='关于', command=about)
-        A.add_command(label='账户管理', command=self.User_info)
-        A.add_command(label='退出', command=self.root.destroy)
+        A.add_command(label='About', command=about)
+        A.add_command(label='Account Management', command=self.User_info)
+        A.add_command(label='Exit', command=self.root.destroy)
 
         self.root.config(menu=menubar)
 
         self.get_receipt_trace()
 
     def User_info(self):
-        if self.jobtxt != 'Get Receipt Trace':  # 根据窗体标题来决定否则执行这个菜单功能
-            if self.jobtxt == '考勤管理':  # 如果要切换，就先根据窗体标签把现在的框架卸载掉
-                self.kaopage.destroy()
-            if self.jobtxt == '工资管理':  # 如果要切换，就先根据窗体标签把现在的框架卸载掉
-                self.gongpage.destroy()
+        if self.jobtxt != 'User_info':  # 根据窗体标题来决定否则执行这个菜单功能
+            if self.jobtxt == 'Creat Receipt':  # 如果要切换，就先根据窗体标签把现在的框架卸载掉
+                self.create_receipt_page.destroy()
+            if self.jobtxt == 'Get Receipt Trace':
+                self.get_Receipt_page.destroy()
 
-            self.renpage = getReceiptTrace(self.root)  # 调用job.py的ren类，显示人事管理界面
-            self.renpage.pack()
-            self.root.title('Get Receipt Trace')
-            self.jobtxt = 'Get Receipt Trace'  # 记下窗体标题
+            self.userpage = userInfo(self.root)  # 调用job.py的ren类，显示人事管理界面
+            self.userpage.pack()
+            self.root.title('User information')
+            self.jobtxt = 'User_info'  # 记下窗体标题
 
     def get_receipt_trace(self):  # 执行人员管理菜单
         if self.jobtxt != 'Get Receipt Trace':  # 根据窗体标题来决定否则执行这个菜单功能
@@ -161,6 +161,8 @@ class home():
                 self.create_receipt_page.destroy()
             if self.jobtxt == '工资管理':  # 如果要切换，就先根据窗体标签把现在的框架卸载掉
                 self.gongpage.destroy()
+            if self.jobtxt == 'User_info':
+                self.userpage.destroy()
 
             self.get_Receipt_page = getReceiptTrace(self.root)  # 调用job.py的ren类，显示人事管理界面
             self.get_Receipt_page.pack()
@@ -173,23 +175,27 @@ class home():
                 self.get_Receipt_page.destroy()
             if self.jobtxt == '工资管理':
                 self.gongpage.destroy()
+            if self.jobtxt == 'User_info':
+                self.userpage.destroy()
 
             self.create_receipt_page = create_receipt(self.root)
             self.create_receipt_page.pack()
             self.root.title('Creat Receipt')
             self.jobtxt = 'Creat Receipt'
 
-    def gotogong(self):  # 执行工资管理菜单
-        if self.jobtxt != '工资管理':
-            if self.jobtxt == 'Creat Receipt':
-                self.create_receipt_page.destroy()
-            if self.jobtxt == 'Get Receipt Trace':
-                self.get_Receipt_page.destroy()
-
-            self.gongpage = gong(self.root)
-            self.gongpage.pack()
-            self.root.title('工资管理')
-            self.jobtxt = '工资管理'
+    # def gotogong(self):  # 执行工资管理菜单
+    #     if self.jobtxt != '工资管理':
+    #         if self.jobtxt == 'Creat Receipt':
+    #             self.create_receipt_page.destroy()
+    #         if self.jobtxt == 'Get Receipt Trace':
+    #             self.get_Receipt_page.destroy()
+    #         if self.jobtxt == 'User_info':
+    #             self.userpage.destroy()
+    #
+    #         self.gongpage = gong(self.root)
+    #         self.gongpage.pack()
+    #         self.root.title('工资管理')
+    #         self.jobtxt = '工资管理'
 
     def about(self):  # 调用job.py里的about函数，弹出窗体
         about()
@@ -350,23 +356,35 @@ class create_receipt(Frame):
         entry_qualityDate = self.entry_qualityDate.get()
         entry_other_Info = self.entry_other_Info.get()
 
-        if trd.createNewReceipt([int(entry_receipt_id), str(entry_ownerAddress), int(entry_Commodity_id), int(entry_commodity_weight),
-                              int(entry_commodityAmount), int(entry_settelId), int(entry_qualityDate), str(entry_other_Info)]):
+        result = trd.createNewReceipt([int(entry_receipt_id), str(entry_ownerAddress), int(entry_Commodity_id), int(entry_commodity_weight),
+                              int(entry_commodityAmount), int(entry_settelId), int(entry_qualityDate), str(entry_other_Info)])
+        if result[0] == 1:
             messagebox.showinfo(title='Create Result', message='Successfully create receipts \n Receipt ID : {}'.format(entry_receipt_id))
-
-        else:
+        elif result[0] == -1 and result[1] == -1:
             messagebox.showerror(title='Create Result', message='Fail to create receipts \n Receipt ID : {}'.format(entry_receipt_id))
 
-class gong(Frame):
+        elif result[0] == 0:
+            messagebox.showerror(title='Create Result', message='Fail to create receipts \n Receipt ID : {} \n{} \n{} \n{}'.format(entry_receipt_id, result[1][0], result[1][1], result[1][2]))
+
+class userInfo(Frame):
     def __init__(self, master=None):
         Frame.__init__(self, master)
         self.root = master
-        self.creatgong()
+        self.creat_UI()
 
-    def creatgong(self):
-        la1 = Label(self, text='这里是工资管理界面')
+    def creat_UI(self):
+        la1 = Label(self, text='User Information')
         la1.pack()
 
+class change_(Frame):
+    def __init__(self, master=None):
+        Frame.__init__(self, master)
+        self.root = master
+        self.creat_UI()
+
+    def creat_UI(self):
+        la1 = Label(self, text='User Information')
+        la1.pack()
 
 def about():
     top1 = Toplevel()

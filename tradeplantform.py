@@ -12,7 +12,7 @@ from client_config import client_config
 from client.bcoserror import BcosException, BcosError
 import traceback
 import json
-
+import pandas as pd
 import time
 
 # print(data_parser.contract_abi)
@@ -115,19 +115,28 @@ def createNewReceipt(args):
         contract_address = '0xa1f31739948aa3a4061286498ebb1b70ce8bbf9f'
         # args = [3, '0x5B38Da6a701c568545dCfcB03FcB875f56beddC4' ,3 ,3 ,4 ,5 ,6 ,'8']
         result = client.sendRawTransactionGetReceipt(contract_address, data_parser.contract_abi, 'createReceipt', args)
-        client.finish()
+        response_code = pd.read_csv('response.csv', encoding='gbk')
+        response_code.columns = ['status', 'Code', 'Information']
+        status_code = response_code.set_index(['status'])['Code'].to_dict()
+        status_information = response_code.set_index(['status'])['Information'].to_dict()
+        result['status'] = int(result['status'], 16)
+        if result['status'] == '0':
+            print("Successfully create receipts")
+            return [1, 0]
 
-        print("Successfully create receipts")
-
-        print(result)
-
-        return True
-    # txhash = result['transactionHash']
-    # txresponse = client.getTransactionByHash(txhash)
-    # inputresult = data_parser.parse_transaction_input(txresponse['input'])
-    # outputresult = data_parser.parse_receipt_output(inputresult['name'], result['output'])
+        else:
+            print("Fail to create receipts")
+            print("return status: {}".format(result['status']))
+            print("return code: {}".format(status_code[result['status']]))
+            print("return information: {}".format(status_information[result['status']]))
+            log_return = ["return status: {}".format(result['status']), "return code: {}".format(status_code[result['status']]), "return information: {}".format(status_information[result['status']])]
+            return [0, log_return]
+        # txhash = result['transactionHash']
+        # txresponse = client.getTransactionByHash(txhash)
+        # inputresult = data_parser.parse_transaction_input(txresponse['input'])
+        # outputresult = data_parser.parse_receipt_output(inputresult['name'], result['output'])
     except:
         print(result)
         print("Fail to create receipts")
-        return False
+        return [-1, -1]
 
