@@ -113,7 +113,7 @@ def createNewReceipt(args):
         # 部署合约
         # user_address = '0xa1bec288a3757996b2b84fcd04c0747a527196ab'
         contract_address = '0xa1f31739948aa3a4061286498ebb1b70ce8bbf9f'
-        args = [3, '0x5B38Da6a701c568545dCfcB03FcB875f56beddC4' ,3 ,3 ,4 ,5 ,6 ,'8']
+        # args = [3, '0x5B38Da6a701c568545dCfcB03FcB875f56beddC4' ,3 ,3 ,4 ,5 ,6 ,'8']
         result = client.sendRawTransactionGetReceipt(contract_address, data_parser.contract_abi, 'createReceipt', args)
         client.finish()
 
@@ -122,10 +122,10 @@ def createNewReceipt(args):
         print(result)
 
         return True
-    txhash = result['transactionHash']
-    txresponse = client.getTransactionByHash(txhash)
-    inputresult = data_parser.parse_transaction_input(txresponse['input'])
-    outputresult = data_parser.parse_receipt_output(inputresult['name'], result['output'])
+    # txhash = result['transactionHash']
+    # txresponse = client.getTransactionByHash(txhash)
+    # inputresult = data_parser.parse_transaction_input(txresponse['input'])
+    # outputresult = data_parser.parse_receipt_output(inputresult['name'], result['output'])
     except:
         print(result)
         print("Fail to create receipts")

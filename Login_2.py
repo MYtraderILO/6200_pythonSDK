@@ -389,5 +389,4 @@ def about():
 
 root = Tk()
 login(root)  # 登录界面类的实例化
-
 root.mainloop()
