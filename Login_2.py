@@ -1,8 +1,9 @@
-from tkinter import *
-from tkinter import messagebox
 import pickle
 import tradeplantform as trd
-
+import tkinter as tk
+import ttkbootstrap as ttk
+from tkinter import messagebox
+from ttkbootstrap.constants import *
 
 class login(object):
     def __init__(self, master=None):
@@ -12,24 +13,24 @@ class login(object):
         self.creatlogin()
 
     def creatlogin(self):
-        self.fr1 = Frame(self.root)
+        self.fr1 = tk.Frame(self.root)
         self.fr1.pack()
-        new_name = StringVar()  # 将输入的注册名赋值给变量
+        new_name = tk.StringVar()  # 将输入的注册名赋值给变量
         new_name.set('@Meta.com')
-        Label(self.fr1, text='Login', font=('microsoft yahei', 20, 'bold')).grid(row=0, columnspan=2)
-        self.lab1 = Label(self.fr1, text='User Account: ')
+        tk.Label(self.fr1, text='Login', font=('microsoft yahei', 20, 'bold')).grid(row=0, columnspan=2)
+        self.lab1 = tk.Label(self.fr1, text='User Account: ')
         self.lab1.grid(row=1, column=0, pady=40)
-        self.en2 = Entry(self.fr1, textvariable=new_name)
+        self.en2 = tk.Entry(self.fr1, textvariable=new_name)
         self.en2.grid(row=1, column=1, pady=40)
-        self.lab1 = Label(self.fr1, text='User Password: ')
+        self.lab1 = tk.Label(self.fr1, text='User Password: ')
         self.lab1.grid(row=2, column=0, pady=15)
-        self.en1 = Entry(self.fr1)
+        self.en1 = tk.Entry(self.fr1)
         self.en1.grid(row=2, column=1, pady=15)
 
-        self.but1 = Button(self.fr1, text="Login", command=self.usr_log_in)
+        self.but1 = ttk.Button(self.fr1, text="Login",bootstyle=(INFO,OUTLINE),command=self.usr_log_in)
         self.but1.grid(row=3, column=0, pady=20)
 
-        self.but2 = Button(self.fr1, text="Sign up", command=self.usr_sign_up)
+        self.but2 = ttk.Button(self.fr1, text="Sign up", bootstyle=(SUCCESS),command=self.usr_sign_up)
         self.but2.grid(row=3, column=1, pady=20)
         self.en1.focus_set()  # 获得焦点
 
@@ -94,29 +95,29 @@ class login(object):
                 window_sign_up.destroy()
 
         # 定义长在窗口上的窗口
-        window_sign_up = Toplevel(self.fr1)
+        window_sign_up = tk.Toplevel(self.fr1)
         window_sign_up.geometry('600x400+222+111')
         window_sign_up.title('Sign up window')
 
-        new_name = StringVar()  # 将输入的注册名赋值给变量
+        new_name = tk.StringVar()  # 将输入的注册名赋值给变量
         new_name.set('@Meta.com')  # 将最初显示定为'example@python.com'
-        Label(window_sign_up, text='User name: ').place(x=10, y=10)  # 将`User name:`放置在坐标（10,10）。
-        entry_new_name = Entry(window_sign_up, textvariable=new_name)  # 创建一个注册名的`entry`，变量为`new_name`
-        entry_new_name.place(x=130, y=10)  # `entry`放置在坐标（150,10）.
+        tk.Label(window_sign_up, text='User name: ').place(x=160, y=100)  # 将`User name:`放置在坐标（10,10）。
+        entry_new_name = tk.Entry(window_sign_up, textvariable=new_name)  # 创建一个注册名的`entry`，变量为`new_name`
+        entry_new_name.place(x=280, y=100)  # `entry`放置在坐标（150,10）.
 
-        new_pwd = StringVar()
-        Label(window_sign_up, text='Password: ').place(x=10, y=50)
-        entry_usr_pwd = Entry(window_sign_up, textvariable=new_pwd, show='*')
-        entry_usr_pwd.place(x=130, y=50)
+        new_pwd = tk.StringVar()
+        tk.Label(window_sign_up, text='Password: ').place(x=160, y=140)
+        entry_usr_pwd = tk.Entry(window_sign_up, textvariable=new_pwd, show='*')
+        entry_usr_pwd.place(x=280, y=140)
 
-        new_pwd_confirm = StringVar()
-        Label(window_sign_up, text='Confirm password: ').place(x=10, y=90)
-        entry_usr_pwd_confirm = Entry(window_sign_up, textvariable=new_pwd_confirm, show='*')
-        entry_usr_pwd_confirm.place(x=130, y=90)
+        new_pwd_confirm = tk.StringVar()
+        tk.Label(window_sign_up, text='Confirm password: ').place(x=160, y=180)
+        entry_usr_pwd_confirm = tk.Entry(window_sign_up, textvariable=new_pwd_confirm, show='*')
+        entry_usr_pwd_confirm.place(x=280,y=180)
 
         # 下面的 sign_to_Hongwei_Website
-        btn_comfirm_sign_up = Button(window_sign_up, text='Sign up', command=sign_to_Meta_Website)
-        btn_comfirm_sign_up.place(x=180, y=120)
+        btn_comfirm_sign_up = ttk.Button(window_sign_up, text='Sign up', command=sign_to_Meta_Website)
+        btn_comfirm_sign_up.place(x=260, y=240)
 
 
 class home():
@@ -128,8 +129,8 @@ class home():
 
     def createPage(self):
 
-        menubar = Menu(self.root)
-        A = Menu(menubar, tearoff=0)
+        menubar = tk.Menu(self.root)
+        A = tk.Menu(menubar, tearoff=0)
         menubar.add_cascade(label='Operation', menu=A)
         A.add_command(label='Get Receipt Trace', command=self.get_receipt_trace)
         A.add_command(label='Create Receipts', command=self.get_create_receipt)
@@ -201,9 +202,9 @@ class home():
         about()
 
 
-class getReceiptTrace(Frame):  # 继承Frame类
+class getReceiptTrace(tk.Frame):  # 继承Frame类
     def __init__(self, master=None):
-        Frame.__init__(self, master)
+        tk.Frame.__init__(self, master)
         self.root = master
         self.index = None
         self.dic_info = None
@@ -211,15 +212,15 @@ class getReceiptTrace(Frame):  # 继承Frame类
         self.creatInfo()
 
     def creatInfo(self):
-        la1 = Label(self, text='Get Receipts Trace', font=('microsoft yahei', 20, 'bold'))
+        la1 = tk.Label(self, text='Get Receipts Trace', font=('microsoft yahei', 20, 'bold'))
         la1.grid(row=0, columnspan=2)
-        txt1 = Label(self, text='Receipt Id :')
+        txt1 = tk.Label(self, text='Receipt Id :')
         txt1.grid(row=1, column=0, pady=20)
-        self.en1 = Entry(self, text='Get Receipts Trace')
+        self.en1 = tk.Entry(self, text='Get Receipts Trace')
         self.en1.grid(row=1, column=1, pady=20)
-        self.bt1 = Button(self, text='Look up', command=self.cmd_receipt)
+        self.bt1 = ttk.Button(self, text='Look up', command=self.cmd_receipt)
         self.bt1.grid(row=2, column=0, pady=20)
-        self.bt2 = Button(self, text='Show Result', command=self.show_result)
+        self.bt2 = ttk.Button(self, text='Show Result', command=self.show_result)
         self.bt2.grid(row=2, column=1, pady=20)
 
     def cmd_receipt(self):
@@ -236,7 +237,7 @@ class getReceiptTrace(Frame):  # 继承Frame类
             if page > self.index:
                 messagebox.showerror(title='Error', message="Last Page")
             else:
-                Label(window_show_receipt, text='信息: {} \n 操作者地址: {} \n 拥有者信息:{} \n拥有者地址: {} '
+                tk.Label(window_show_receipt, text='信息: {} \n 操作者地址: {} \n 拥有者信息:{} \n拥有者地址: {} '
                                            '\n 存放仓库id: {} \n货品id: {} \n货品重量: {} \n货品数量: {} \n 质检日期: {}'
                                            ' \n上链时间: {} \n仓单状态:{} \n 其他信息: {}'.format(page, self.dic_info[page]['owner_address'], self.dic_info[page]['owner_id'],
                                                                                       self.dic_info[page]['owner_address'], self.dic_info[page]['settel_Id'],
@@ -248,14 +249,14 @@ class getReceiptTrace(Frame):  # 继承Frame类
                                                                                       self.dic_info[page]['sting_info'],
                                                                                       self.dic_info[page]['receipt_state'])).place(x=10, y=10)
                 self.page += 1
-                Label(window_show_receipt, text='page: {} / {}'.format(self.page, self.index)).place(x=300, y=300)
+                tk.Label(window_show_receipt, text='page: {} / {}'.format(self.page, self.index)).place(x=300, y=300)
 
         def last_info(page):
 
             if page <= 0:
                 messagebox.showerror(title='Error', message="First Page")
             else:
-                Label(window_show_receipt, text='信息: {} \n 操作者地址: {} \n 拥有者信息:{} \n拥有者地址: {} '
+                tk.Label(window_show_receipt, text='信息: {} \n 操作者地址: {} \n 拥有者信息:{} \n拥有者地址: {} '
                                            '\n 存放仓库id: {} \n货品id: {} \n货品重量: {} \n货品数量: {} \n 质检日期: {}'
                                            ' \n上链时间: {} \n仓单状态:{} \n 其他信息: {}'.format(page, self.dic_info[page]['owner_address'], self.dic_info[page]['owner_id'],
                                                                                       self.dic_info[page]['owner_address'], self.dic_info[page]['settel_Id'],
@@ -268,17 +269,17 @@ class getReceiptTrace(Frame):  # 继承Frame类
                                                                                       self.dic_info[page]['receipt_state'])).place(x=10, y=10)
 
                 self.page -= 1
-                Label(window_show_receipt, text='page: {} / {}'.format(self.page, self.index)).place(x=300, y=300)
+                tk.Label(window_show_receipt, text='page: {} / {}'.format(self.page, self.index)).place(x=300, y=300)
 
         if self.dic_info is None:
             messagebox.showerror(title='Results of warehouse receipts', message='No results')
         else:
-            window_show_receipt = Toplevel(self)
+            window_show_receipt = tk.Toplevel(self)
             window_show_receipt.geometry('600x400+222+111')
             window_show_receipt.title('Results Information')
 
 
-            Label(window_show_receipt, text='信息: {} \n 操作者地址: {} \n 拥有者信息:{} \n拥有者地址: {} '
+            tk.Label(window_show_receipt, text='信息: {} \n 操作者地址: {} \n 拥有者信息:{} \n拥有者地址: {} '
                                        '\n 存放仓库id: {} \n货品id: {} \n货品重量: {} \n货品数量: {} \n 质检日期: {}'
                                        ' \n上链时间: {} \n仓单状态:{} \n 其他信息: {}'.format(self.page, self.dic_info[self.page]['owner_address'], self.dic_info[self.page]['owner_id'],
                                                                                   self.dic_info[self.page]['owner_address'], self.dic_info[self.page]['settel_Id'],
@@ -292,58 +293,58 @@ class getReceiptTrace(Frame):  # 继承Frame类
 
 
 
-            button_next = Button(window_show_receipt, text='Next', command=lambda: next_info(self.page + 1))
+            button_next = ttk.Button(window_show_receipt, text='Next', command=lambda: next_info(self.page + 1))
             button_next.place(x=350, y=250)
-            button_before = Button(window_show_receipt, text='Before', command=lambda: last_info(self.page - 1))
+            button_before = ttk.Button(window_show_receipt, text='Before', command=lambda: last_info(self.page - 1))
             button_before.place(x=250, y=250)
 
-            Label(window_show_receipt, text='page: {} / {}'.format(self.page, self.index)).place(x=300, y=300)
+            tk.Label(window_show_receipt, text='page: {} / {}'.format(self.page, self.index)).place(x=300, y=300)
 
-class create_receipt(Frame):
+class create_receipt(tk.Frame):
 
     def __init__(self, master=None):
-        Frame.__init__(self, master)
+        tk.Frame.__init__(self, master)
         self.root = master
         self.creat_UI()
 
     def creat_UI(self):
-        Label(self, text='Create Receipts Functions ', font=('microsoft yahei', 20, 'bold')).grid(row=0, columnspan=2)
+        tk.Label(self, text='Create Receipts Functions ', font=('microsoft yahei', 20, 'bold')).grid(row=0, columnspan=2)
 
-        Label(self, text='Receipt ID: ').grid(row=1, column=0)
-        self.entry_receipt_id = Entry(self)
+        tk.Label(self, text='Receipt ID: ').grid(row=1, column=0)
+        self.entry_receipt_id = tk.Entry(self)
         self.entry_receipt_id.grid(row=1, column=1)
 
-        Label(self, text='Owner Address: ').grid(row=2, column=0)
-        self.entry_ownerAddress = Entry(self)
+        tk.Label(self, text='Owner Address: ').grid(row=2, column=0)
+        self.entry_ownerAddress = tk.Entry(self)
         self.entry_ownerAddress.grid(row=2, column=1)
 
-        Label(self, text='Commodity Id: ').grid(row=3, column=0)
-        self.entry_Commodity_id = Entry(self)
+        tk.Label(self, text='Commodity Id: ').grid(row=3, column=0)
+        self.entry_Commodity_id = tk.Entry(self)
         self.entry_Commodity_id.grid(row=3, column=1)
 
-        Label(self, text='Commodity Weight: ').grid(row=4, column=0)
-        self.entry_commodity_weight = Entry(self)
+        tk.Label(self, text='Commodity Weight: ').grid(row=4, column=0)
+        self.entry_commodity_weight = tk.Entry(self)
         self.entry_commodity_weight.grid(row=4, column=1)
 
-        Label(self, text='Commodity Amount: ').grid(row=5, column=0)
-        self.entry_commodityAmount = Entry(self)
+        tk.Label(self, text='Commodity Amount: ').grid(row=5, column=0)
+        self.entry_commodityAmount = tk.Entry(self)
         self.entry_commodityAmount.grid(row=5, column=1)
 
-        Label(self, text='Settel Id: ').grid(row=6, column=0)
-        self.entry_settelId = Entry(self)
+        tk.Label(self, text='Settel Id: ').grid(row=6, column=0)
+        self.entry_settelId = tk.Entry(self)
         self.entry_settelId.grid(row=6, column=1)
 
-        Label(self, text='Quality Date: ').grid(row=7, column=0)
-        self.entry_qualityDate = Entry(self)
+        tk.Label(self, text='Quality Date: ').grid(row=7, column=0)
+        self.entry_qualityDate = tk.Entry(self)
         self.entry_qualityDate.grid(row=7, column=1)
 
-        new_create = StringVar()  # 将输入的注册名赋值给变量
+        new_create = tk.StringVar()  # 将输入的注册名赋值给变量
         new_create.set('First Create Receipts')  # 将最初显示定为'example@python.com'
-        Label(self, text='Other Info: ').grid(row=8, column=0)
-        self.entry_other_Info = Entry(self, textvariable=new_create)
+        tk.Label(self, text='Other Info: ').grid(row=8, column=0)
+        self.entry_other_Info = tk.Entry(self, textvariable=new_create)
         self.entry_other_Info.grid(row=8, column=1)
 
-        Button(self, text='Create', command=self.sendCreation).grid(row=9, column=1)
+        ttk.Button(self, text='Create', command=self.sendCreation).grid(row=9, column=1)
 
     def sendCreation(self):
 
@@ -366,36 +367,36 @@ class create_receipt(Frame):
         elif result[0] == 0:
             messagebox.showerror(title='Create Result', message='Fail to create receipts \n Receipt ID : {} \n{} \n{} \n{}'.format(entry_receipt_id, result[1][0], result[1][1], result[1][2]))
 
-class userInfo(Frame):
+class userInfo(tk.Frame):
     def __init__(self, master=None):
-        Frame.__init__(self, master)
+        tk.Frame.__init__(self, master)
         self.root = master
         self.creat_UI()
 
     def creat_UI(self):
-        la1 = Label(self, text='User Information')
+        la1 = tk.Label(self, text='User Information')
         la1.pack()
 
-class change_(Frame):
+class change_(tk.Frame):
     def __init__(self, master=None):
-        Frame.__init__(self, master)
+        tk.Frame.__init__(self, master)
         self.root = master
         self.creat_UI()
 
     def creat_UI(self):
-        la1 = Label(self, text='User Information')
+        la1 = tk.Label(self, text='User Information')
         la1.pack()
 
 def about():
-    top1 = Toplevel()
+    top1 = tk.Toplevel()
     top1.geometry('600x400+222+111')
-    top1.title('关于')
+    top1.title('About')
 
-    la1 = Label(top1, text='Meta Digital Receipt System')
+    la1 = tk.Label(top1, text='Meta Digital Receipt System')
     la1.pack(pady=10)
-    la2 = Label(top1, text='Contact with us: +852 110')
+    la2 = tk.Label(top1, text='Contact with us: +852 110')
     la2.pack(pady=10)
-    but1 = Button(top1, text="  O K  ", command=top1.destroy)
+    but1 = ttk.Button(top1, text="  O K  ", command=top1.destroy)
     but1.pack(side=BOTTOM, pady=10)
 
     top1.attributes("-toolwindow", 1)  # 无最大化，最小化
@@ -405,6 +406,6 @@ def about():
     top1.focus_force()  # 得到焦点
 
 
-root = Tk()
+root = tk.Tk()
 login(root)  # 登录界面类的实例化
 root.mainloop()
