@@ -136,8 +136,9 @@ class home():
         A.add_command(label='Create Receipts', command=self.get_create_receipt)
         # A.add_command(label='工资管理', command=self.gotogong)
         # A.add_command(label='关于',command=self.about)
-        A.add_command(label='About', command=about)
+        A.add_command(label='Split Receipts', command=self.split_receipt)
         A.add_command(label='Account Management', command=self.User_info)
+        A.add_command(label='About', command=about)
         A.add_command(label='Exit', command=self.root.destroy)
 
         self.root.config(menu=menubar)
@@ -150,6 +151,8 @@ class home():
                 self.create_receipt_page.destroy()
             if self.jobtxt == 'Get Receipt Trace':
                 self.get_Receipt_page.destroy()
+            if self.jobtxt == 'Split Receipt':
+                self.split_receipt_page.destroy()
 
             self.userpage = userInfo(self.root)  # 调用job.py的ren类，显示人事管理界面
             self.userpage.pack()
@@ -160,8 +163,8 @@ class home():
         if self.jobtxt != 'Get Receipt Trace':  # 根据窗体标题来决定否则执行这个菜单功能
             if self.jobtxt == 'Creat Receipt':  # 如果要切换，就先根据窗体标签把现在的框架卸载掉
                 self.create_receipt_page.destroy()
-            if self.jobtxt == '工资管理':  # 如果要切换，就先根据窗体标签把现在的框架卸载掉
-                self.gongpage.destroy()
+            if self.jobtxt == 'Split Receipt':
+                self.split_receipt_page.destroy()
             if self.jobtxt == 'User_info':
                 self.userpage.destroy()
 
@@ -174,8 +177,8 @@ class home():
         if self.jobtxt != 'Creat Receipt':
             if self.jobtxt == 'Get Receipt Trace':
                 self.get_Receipt_page.destroy()
-            if self.jobtxt == '工资管理':
-                self.gongpage.destroy()
+            if self.jobtxt == 'Split Receipt':
+                self.split_receipt_page.destroy()
             if self.jobtxt == 'User_info':
                 self.userpage.destroy()
 
@@ -184,6 +187,19 @@ class home():
             self.root.title('Creat Receipt')
             self.jobtxt = 'Creat Receipt'
 
+    def split_receipt(self):
+        if self.jobtxt != 'Split Receipt':
+            if self.jobtxt == 'Get Receipt Trace':
+                self.get_Receipt_page.destroy()
+            if self.jobtxt == 'Creat Receipt':
+                self.create_receipt_page.destroy()
+            if self.jobtxt == 'User_info':
+                self.userpage.destroy()
+
+            self.split_receipt_page = splitReceipt(self.root)
+            self.split_receipt_page.pack()
+            self.root.title('Split Receipt')
+            self.jobtxt = 'Split Receipt'
     # def gotogong(self):  # 执行工资管理菜单
     #     if self.jobtxt != '工资管理':
     #         if self.jobtxt == 'Creat Receipt':
@@ -300,6 +316,7 @@ class getReceiptTrace(tk.Frame):  # 继承Frame类
 
             tk.Label(window_show_receipt, text='page: {} / {}'.format(self.page, self.index)).place(x=300, y=300)
 
+
 class create_receipt(tk.Frame):
 
     def __init__(self, master=None):
@@ -377,15 +394,75 @@ class userInfo(tk.Frame):
         la1 = tk.Label(self, text='User Information')
         la1.pack()
 
-class change_(tk.Frame):
+
+class splitReceipt(tk.Frame):
     def __init__(self, master=None):
         tk.Frame.__init__(self, master)
         self.root = master
         self.creat_UI()
 
     def creat_UI(self):
-        la1 = tk.Label(self, text='User Information')
-        la1.pack()
+        tk.Label(self, text='Split Receipts', font=('microsoft yahei', 20, 'bold')).grid(row=0, columnspan=2)
+        tk.Label(self, text='Create Receipts Functions ', font=('microsoft yahei', 20, 'bold')).grid(row=0, columnspan=2)
+
+        tk.Label(self, text='Split Receipt ID: ').grid(row=1, column=0)
+        self.entry_receipt_id = tk.Entry(self)
+        self.entry_receipt_id.grid(row=1, column=1)
+
+        tk.Label(self, text='Old Amount: ').grid(row=2, column=0)
+        self.entry_oldAmount = tk.Entry(self)
+        self.entry_oldAmount.grid(row=2, column=1)
+
+        tk.Label(self, text='New Receipt ID: ').grid(row=3, column=0)
+        self.entry_newReceiptID = tk.Entry(self)
+        self.entry_newReceiptID.grid(row=3, column=1)
+
+        tk.Label(self, text='Owner Address: ').grid(row=4, column=0)
+        self.entry_ownerAddress = tk.Entry(self)
+        self.entry_ownerAddress.grid(row=4, column=1)
+
+        tk.Label(self, text='Commodity Id: ').grid(row=5, column=0)
+        self.entry_Commodity_id = tk.Entry(self)
+        self.entry_Commodity_id.grid(row=5, column=1)
+
+        tk.Label(self, text='Commodity Weight: ').grid(row=6, column=0)
+        self.entry_commodity_weight = tk.Entry(self)
+        self.entry_commodity_weight.grid(row=6, column=1)
+
+        tk.Label(self, text='Commodity Amount: ').grid(row=7, column=0)
+        self.entry_commodityAmount = tk.Entry(self)
+        self.entry_commodityAmount.grid(row=7, column=1)
+
+        tk.Label(self, text='Settel Id: ').grid(row=8, column=0)
+        self.entry_settelId = tk.Entry(self)
+        self.entry_settelId.grid(row=8, column=1)
+
+        tk.Label(self, text='Quality Date: ').grid(row=9, column=0)
+        self.entry_qualityDate = tk.Entry(self)
+        self.entry_qualityDate.grid(row=9, column=1)
+
+        new_create = tk.StringVar()  # 将输入的注册名赋值给变量
+        new_create.set('Split the {Old Receipt}, Create {New Receipt}')  # 将最初显示定为'example@python.com'
+        tk.Label(self, text='Other Info: ').grid(row=10, column=0)
+        self.entry_other_Info = tk.Entry(self, textvariable=new_create)
+        self.entry_other_Info.grid(row=10, column=1)
+
+        tk.Button(self, text='Split', command=self.sendSpilt).grid(row=11, column=1)
+
+    def sendSpilt(self):
+
+        entry_old_receipt_id = self.entry_receipt_id.get()
+        entry_oldAmount = self.entry_oldAmount.get()
+
+        entry_receipt_id = self.entry_newReceiptID.get()
+        entry_ownerAddress = self.entry_ownerAddress.get()
+        entry_Commodity_id = self.entry_newReceiptID.get()
+        entry_commodity_weight = self.entry_commodity_weight.get()
+        entry_commodityAmount = self.entry_commodityAmount.get()
+        entry_settelId = self.entry_settelId.get()
+        entry_qualityDate = self.entry_qualityDate.get()
+        entry_other_Info = self.entry_other_Info.get()
+
 
 def about():
     top1 = tk.Toplevel()
