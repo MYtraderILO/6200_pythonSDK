@@ -140,3 +140,41 @@ def createNewReceipt(args):
         print("Fail to create receipts")
         return [-1, -1]
 
+def splitReceipt(args):
+    result = 'query error'
+    try:
+        demo_config = client_config
+        abi_file = "contracts/Base.abi"
+        data_parser = DatatypeParser()
+        data_parser.load_abi_file(abi_file)
+        client = BcosClient()
+        print(client.getinfo())
+        # 部署合约
+        # user_address = '0xa1bec288a3757996b2b84fcd04c0747a527196ab'
+        contract_address = '0xa1f31739948aa3a4061286498ebb1b70ce8bbf9f'
+        # args = [300, 1000, True, 302, '0x5B38Da6a701c568545dCfcB03FcB875f56beddC4' ,1000 ,1000 ,4 ,5 ,6 ,'8']
+        result = client.sendRawTransactionGetReceipt(contract_address, data_parser.contract_abi, 'spiltReceipt', args)
+        response_code = pd.read_csv('response.csv', encoding='gbk')
+        response_code.columns = ['status', 'Code', 'Information']
+        status_code = response_code.set_index(['status'])['Code'].to_dict()
+        status_information = response_code.set_index(['status'])['Information'].to_dict()
+        result['status'] = int(result['status'], 16)
+        if result['status'] == '0':
+            print("Successfully create receipts")
+            return [1, 0]
+
+        else:
+            print("Fail to create receipts")
+            print("return status: {}".format(result['status']))
+            print("return code: {}".format(status_code[result['status']]))
+            print("return information: {}".format(status_information[result['status']]))
+            log_return = ["return status: {}".format(result['status']), "return code: {}".format(status_code[result['status']]), "return information: {}".format(status_information[result['status']])]
+            return [0, log_return]
+        # txhash = result['transactionHash']
+        # txresponse = client.getTransactionByHash(txhash)
+        # inputresult = data_parser.parse_transaction_input(txresponse['input'])
+        # outputresult = data_parser.parse_receipt_output(inputresult['name'], result['output'])
+    except:
+
+        print("Fail to create receipts")
+        return [-1, -1]

@@ -1,9 +1,13 @@
 import pickle
+
+import pandas as pd
+import time
 import tradeplantform as trd
 import tkinter as tk
 import ttkbootstrap as ttk
 from tkinter import messagebox
 from ttkbootstrap.constants import *
+
 
 class login(object):
     def __init__(self, master=None):
@@ -27,10 +31,10 @@ class login(object):
         self.en1 = tk.Entry(self.fr1)
         self.en1.grid(row=2, column=1, pady=15)
 
-        self.but1 = ttk.Button(self.fr1, text="Login",bootstyle=(INFO,OUTLINE),command=self.usr_log_in)
+        self.but1 = ttk.Button(self.fr1, text="Login", bootstyle=(INFO, OUTLINE), command=self.usr_log_in)
         self.but1.grid(row=3, column=0, pady=20)
 
-        self.but2 = ttk.Button(self.fr1, text="Sign up", bootstyle=(SUCCESS),command=self.usr_sign_up)
+        self.but2 = ttk.Button(self.fr1, text="Sign up", bootstyle=(SUCCESS), command=self.usr_sign_up)
         self.but2.grid(row=3, column=1, pady=20)
         self.en1.focus_set()  # 获得焦点
 
@@ -113,7 +117,7 @@ class login(object):
         new_pwd_confirm = tk.StringVar()
         tk.Label(window_sign_up, text='Confirm password: ').place(x=160, y=180)
         entry_usr_pwd_confirm = tk.Entry(window_sign_up, textvariable=new_pwd_confirm, show='*')
-        entry_usr_pwd_confirm.place(x=280,y=180)
+        entry_usr_pwd_confirm.place(x=280, y=180)
 
         # 下面的 sign_to_Hongwei_Website
         btn_comfirm_sign_up = ttk.Button(window_sign_up, text='Sign up', command=sign_to_Meta_Website)
@@ -137,7 +141,7 @@ class home():
         # A.add_command(label='工资管理', command=self.gotogong)
         # A.add_command(label='关于',command=self.about)
         A.add_command(label='Split Receipts', command=self.split_receipt)
-        A.add_command(label='Account Management', command=self.User_info)
+        A.add_command(label='Ask and Bid', command=self.ask_bid)
         A.add_command(label='About', command=about)
         A.add_command(label='Exit', command=self.root.destroy)
 
@@ -145,8 +149,8 @@ class home():
 
         self.get_receipt_trace()
 
-    def User_info(self):
-        if self.jobtxt != 'User_info':  # 根据窗体标题来决定否则执行这个菜单功能
+    def ask_bid(self):
+        if self.jobtxt != 'ask_bid':  # 根据窗体标题来决定否则执行这个菜单功能
             if self.jobtxt == 'Creat Receipt':  # 如果要切换，就先根据窗体标签把现在的框架卸载掉
                 self.create_receipt_page.destroy()
             if self.jobtxt == 'Get Receipt Trace':
@@ -154,10 +158,10 @@ class home():
             if self.jobtxt == 'Split Receipt':
                 self.split_receipt_page.destroy()
 
-            self.userpage = userInfo(self.root)  # 调用job.py的ren类，显示人事管理界面
-            self.userpage.pack()
-            self.root.title('User information')
-            self.jobtxt = 'User_info'  # 记下窗体标题
+            self.askpage = ask_bid(self.root)  # 调用job.py的ren类，显示人事管理界面
+            self.askpage.pack()
+            self.root.title('Ask and Bid function')
+            self.jobtxt = 'ask_bid'  # 记下窗体标题
 
     def get_receipt_trace(self):  # 执行人员管理菜单
         if self.jobtxt != 'Get Receipt Trace':  # 根据窗体标题来决定否则执行这个菜单功能
@@ -165,8 +169,8 @@ class home():
                 self.create_receipt_page.destroy()
             if self.jobtxt == 'Split Receipt':
                 self.split_receipt_page.destroy()
-            if self.jobtxt == 'User_info':
-                self.userpage.destroy()
+            if self.jobtxt == 'ask_bid':
+                self.askpage.destroy()
 
             self.get_Receipt_page = getReceiptTrace(self.root)  # 调用job.py的ren类，显示人事管理界面
             self.get_Receipt_page.pack()
@@ -179,8 +183,8 @@ class home():
                 self.get_Receipt_page.destroy()
             if self.jobtxt == 'Split Receipt':
                 self.split_receipt_page.destroy()
-            if self.jobtxt == 'User_info':
-                self.userpage.destroy()
+            if self.jobtxt == 'ask_bid':
+                self.askpage.destroy()
 
             self.create_receipt_page = create_receipt(self.root)
             self.create_receipt_page.pack()
@@ -193,13 +197,14 @@ class home():
                 self.get_Receipt_page.destroy()
             if self.jobtxt == 'Creat Receipt':
                 self.create_receipt_page.destroy()
-            if self.jobtxt == 'User_info':
-                self.userpage.destroy()
+            if self.jobtxt == 'ask_bid':
+                self.askpage.destroy()
 
             self.split_receipt_page = splitReceipt(self.root)
             self.split_receipt_page.pack()
             self.root.title('Split Receipt')
             self.jobtxt = 'Split Receipt'
+
     # def gotogong(self):  # 执行工资管理菜单
     #     if self.jobtxt != '工资管理':
     #         if self.jobtxt == 'Creat Receipt':
@@ -254,16 +259,16 @@ class getReceiptTrace(tk.Frame):  # 继承Frame类
                 messagebox.showerror(title='Error', message="Last Page")
             else:
                 tk.Label(window_show_receipt, text='信息: {} \n 操作者地址: {} \n 拥有者信息:{} \n拥有者地址: {} '
-                                           '\n 存放仓库id: {} \n货品id: {} \n货品重量: {} \n货品数量: {} \n 质检日期: {}'
-                                           ' \n上链时间: {} \n仓单状态:{} \n 其他信息: {}'.format(page, self.dic_info[page]['owner_address'], self.dic_info[page]['owner_id'],
-                                                                                      self.dic_info[page]['owner_address'], self.dic_info[page]['settel_Id'],
-                                                                                      self.dic_info[page]['commodityId'],
-                                                                                      self.dic_info[page]['commodityWeight'],
-                                                                                      self.dic_info[page]['commodityAmount'],
-                                                                                      self.dic_info[page]['quality_date'],
-                                                                                      self.dic_info[page]['list_date'],
-                                                                                      self.dic_info[page]['sting_info'],
-                                                                                      self.dic_info[page]['receipt_state'])).place(x=10, y=10)
+                                                   '\n 存放仓库id: {} \n货品id: {} \n货品重量: {} \n货品数量: {} \n 质检日期: {}'
+                                                   ' \n上链时间: {} \n仓单状态:{} \n 其他信息: {}'.format(page, self.dic_info[page]['owner_address'], self.dic_info[page]['owner_id'],
+                                                                                              self.dic_info[page]['owner_address'], self.dic_info[page]['settel_Id'],
+                                                                                              self.dic_info[page]['commodityId'],
+                                                                                              self.dic_info[page]['commodityWeight'],
+                                                                                              self.dic_info[page]['commodityAmount'],
+                                                                                              self.dic_info[page]['quality_date'],
+                                                                                              self.dic_info[page]['list_date'],
+                                                                                              self.dic_info[page]['sting_info'],
+                                                                                              self.dic_info[page]['receipt_state'])).place(x=10, y=10)
                 self.page += 1
                 tk.Label(window_show_receipt, text='page: {} / {}'.format(self.page, self.index)).place(x=300, y=300)
 
@@ -273,16 +278,16 @@ class getReceiptTrace(tk.Frame):  # 继承Frame类
                 messagebox.showerror(title='Error', message="First Page")
             else:
                 tk.Label(window_show_receipt, text='信息: {} \n 操作者地址: {} \n 拥有者信息:{} \n拥有者地址: {} '
-                                           '\n 存放仓库id: {} \n货品id: {} \n货品重量: {} \n货品数量: {} \n 质检日期: {}'
-                                           ' \n上链时间: {} \n仓单状态:{} \n 其他信息: {}'.format(page, self.dic_info[page]['owner_address'], self.dic_info[page]['owner_id'],
-                                                                                      self.dic_info[page]['owner_address'], self.dic_info[page]['settel_Id'],
-                                                                                      self.dic_info[page]['commodityId'],
-                                                                                      self.dic_info[page]['commodityWeight'],
-                                                                                      self.dic_info[page]['commodityAmount'],
-                                                                                      self.dic_info[page]['quality_date'],
-                                                                                      self.dic_info[page]['list_date'],
-                                                                                      self.dic_info[page]['sting_info'],
-                                                                                      self.dic_info[page]['receipt_state'])).place(x=10, y=10)
+                                                   '\n 存放仓库id: {} \n货品id: {} \n货品重量: {} \n货品数量: {} \n 质检日期: {}'
+                                                   ' \n上链时间: {} \n仓单状态:{} \n 其他信息: {}'.format(page, self.dic_info[page]['owner_address'], self.dic_info[page]['owner_id'],
+                                                                                              self.dic_info[page]['owner_address'], self.dic_info[page]['settel_Id'],
+                                                                                              self.dic_info[page]['commodityId'],
+                                                                                              self.dic_info[page]['commodityWeight'],
+                                                                                              self.dic_info[page]['commodityAmount'],
+                                                                                              self.dic_info[page]['quality_date'],
+                                                                                              self.dic_info[page]['list_date'],
+                                                                                              self.dic_info[page]['sting_info'],
+                                                                                              self.dic_info[page]['receipt_state'])).place(x=10, y=10)
 
                 self.page -= 1
                 tk.Label(window_show_receipt, text='page: {} / {}'.format(self.page, self.index)).place(x=300, y=300)
@@ -294,20 +299,17 @@ class getReceiptTrace(tk.Frame):  # 继承Frame类
             window_show_receipt.geometry('600x400+222+111')
             window_show_receipt.title('Results Information')
 
-
             tk.Label(window_show_receipt, text='信息: {} \n 操作者地址: {} \n 拥有者信息:{} \n拥有者地址: {} '
-                                       '\n 存放仓库id: {} \n货品id: {} \n货品重量: {} \n货品数量: {} \n 质检日期: {}'
-                                       ' \n上链时间: {} \n仓单状态:{} \n 其他信息: {}'.format(self.page, self.dic_info[self.page]['owner_address'], self.dic_info[self.page]['owner_id'],
-                                                                                  self.dic_info[self.page]['owner_address'], self.dic_info[self.page]['settel_Id'],
-                                                                                  self.dic_info[self.page]['commodityId'],
-                                                                                  self.dic_info[self.page]['commodityWeight'],
-                                                                                  self.dic_info[self.page]['commodityAmount'],
-                                                                                  self.dic_info[self.page]['quality_date'],
-                                                                                  self.dic_info[self.page]['list_date'],
-                                                                                  self.dic_info[self.page]['sting_info'],
-                                                                                  self.dic_info[self.page]['receipt_state'])).place(x=10, y=10)
-
-
+                                               '\n 存放仓库id: {} \n货品id: {} \n货品重量: {} \n货品数量: {} \n 质检日期: {}'
+                                               ' \n上链时间: {} \n仓单状态:{} \n 其他信息: {}'.format(self.page, self.dic_info[self.page]['owner_address'], self.dic_info[self.page]['owner_id'],
+                                                                                          self.dic_info[self.page]['owner_address'], self.dic_info[self.page]['settel_Id'],
+                                                                                          self.dic_info[self.page]['commodityId'],
+                                                                                          self.dic_info[self.page]['commodityWeight'],
+                                                                                          self.dic_info[self.page]['commodityAmount'],
+                                                                                          self.dic_info[self.page]['quality_date'],
+                                                                                          self.dic_info[self.page]['list_date'],
+                                                                                          self.dic_info[self.page]['sting_info'],
+                                                                                          self.dic_info[self.page]['receipt_state'])).place(x=10, y=10)
 
             button_next = ttk.Button(window_show_receipt, text='Next', command=lambda: next_info(self.page + 1))
             button_next.place(x=350, y=250)
@@ -375,7 +377,7 @@ class create_receipt(tk.Frame):
         entry_other_Info = self.entry_other_Info.get()
 
         result = trd.createNewReceipt([int(entry_receipt_id), str(entry_ownerAddress), int(entry_Commodity_id), int(entry_commodity_weight),
-                              int(entry_commodityAmount), int(entry_settelId), int(entry_qualityDate), str(entry_other_Info)])
+                                       int(entry_commodityAmount), int(entry_settelId), int(entry_qualityDate), str(entry_other_Info)])
         if result[0] == 1:
             messagebox.showinfo(title='Create Result', message='Successfully create receipts \n Receipt ID : {}'.format(entry_receipt_id))
         elif result[0] == -1 and result[1] == -1:
@@ -384,15 +386,231 @@ class create_receipt(tk.Frame):
         elif result[0] == 0:
             messagebox.showerror(title='Create Result', message='Fail to create receipts \n Receipt ID : {} \n{} \n{} \n{}'.format(entry_receipt_id, result[1][0], result[1][1], result[1][2]))
 
-class userInfo(tk.Frame):
+
+class ask_bid(tk.Frame):
     def __init__(self, master=None):
         tk.Frame.__init__(self, master)
+        self.page = 1
         self.root = master
         self.creat_UI()
 
     def creat_UI(self):
-        la1 = tk.Label(self, text='User Information')
-        la1.pack()
+        tk.Label(self, text='Ask and Bid Functions ', font=('microsoft yahei', 20, 'bold')).grid(row=0, columnspan=2)
+        ttk.Button(self, text='Ask Information', command=self.sendAsk).grid(row=1, column=0, pady=50)
+        ttk.Button(self, text='Bid Information', command=self.sendBid).grid(row=1, column=1, pady=50)
+        ttk.Button(self, text='Create Ask Order', command=self.createAsk).grid(row=2, column=0, pady=50)
+        ttk.Button(self, text='Create Bid Order', command=self.createBid).grid(row=2, column=1, pady=50)
+
+    def sendAsk(self):
+        self.page = 1
+
+        window_show_receipt = tk.Toplevel(self)
+        window_show_receipt.geometry('600x400+222+111')
+        window_show_receipt.title('Ask Information')
+
+        try:
+            self.ask_data = pd.read_csv('ask_information.csv', index_col=0)
+        except:
+            self.ask_data = pd.DataFrame(columns=['order_id', 'order_name', 'order_amount', 'order_price', 'order_time'])
+        self.button2 = tk.Button(window_show_receipt, text='Before', font=('微软雅黑', 12), command=lambda: beforpage(self.page - 1, self))
+        self.button2.grid(row=3, column=0, pady=40)
+        self.button3 = tk.Button(window_show_receipt, text='Next', font=('微软雅黑', 12), command=lambda: nextpage(self.page + 1, self))
+        self.button3.grid(row=3, column=1, pady=40)
+
+        self.tree1 = ttk.Treeview(
+            window_show_receipt,  #
+            height=5,  # 表格显示的行数
+            columns=['order_id', 'order_name', 'order_amount', 'order_price', 'order_time'],  # 显示的列
+            show='headings',  # 隐藏首列
+        )
+        for x in ['order_id', 'order_name', 'order_amount', 'order_price', 'order_time']:
+            self.tree1.heading(x, text=x)
+            self.tree1.column(x, width=120)
+        self.tree1.grid(row=2, columnspan=3)
+        for i in range(len(self.ask_data)):
+            self.tree1.insert('', i, values=self.ask_data.iloc[i, :].tolist())
+
+        def beforpage(page, self):
+            if page < 1:
+                messagebox.showerror(title='Error', message='First Page')
+            if len(self.ask_data) - 5 * (page - 1) <= 0:
+                messagebox.showerror(title='Error', message='Last page')
+            if len(self.ask_data) - 5 * (page - 1) >= 5:
+                index = 5 * (page - 1)
+                for i in range(5):
+                    self.tree1.insert('', i, values=self.ask_data.iloc[index + i, :].tolist())
+            else:
+                index = 5 * (page - 1)
+                for i in range(len(self.ask_data) - 5 * (page - 1)):
+                    self.tree1.insert('', i, values=self.ask_data.iloc[index + i, :].tolist())
+                for i in range(5 * page - len(self.ask_data)):
+                    self.tree1.insert('', i, values='')
+
+            self.page -= 1
+
+        def nextpage(page, self):
+
+            if len(self.ask_data) - 5 * (page-1) <= 0:
+                messagebox.showerror(title='Error', message='Last page')
+            if len(self.ask_data) - 5 * (page-1) >= 5:
+                index = 5 * (page-1)
+                for i in range(5):
+                    self.tree1.insert('',  i, values=self.ask_data.iloc[index + i, :].tolist())
+            else:
+                index = 5 * (page-1)
+                for i in range(len(self.ask_data) - 5 * (page-1)):
+                    self.tree1.insert('',  i, values=self.ask_data.iloc[index + i, :].tolist())
+                for i in range(5 * page - len(self.ask_data)):
+                    self.tree1.insert('', i, values='')
+            self.page += 1
+
+    def sendBid(self):
+        window_show_receipt = tk.Toplevel(self)
+        window_show_receipt.geometry('600x400+222+111')
+        window_show_receipt.title('Ask Information')
+
+        try:
+            self.bid_data = pd.read_csv('bid_information.csv', index_col=0)
+        except:
+            self.bid_data = pd.DataFrame(columns=['order_id', 'order_name', 'order_amount', 'order_price', 'order_time'])
+        self.button2 = tk.Button(window_show_receipt, text='Before', font=('微软雅黑', 12), command=lambda: beforpage(self.page - 1, self))
+        self.button2.grid(row=3, column=0, pady=40)
+        self.button3 = tk.Button(window_show_receipt, text='Next', font=('微软雅黑', 12), command=lambda: nextpage(self.page + 1, self))
+        self.button3.grid(row=3, column=1, pady=40)
+
+        self.tree1 = ttk.Treeview(
+            window_show_receipt,  #
+            height=5,  # 表格显示的行数
+            columns=['order_id', 'order_name', 'order_amount', 'order_price', 'order_time'],  # 显示的列
+            show='headings',  # 隐藏首列
+        )
+        for x in ['order_id', 'order_name', 'order_amount', 'order_price', 'order_time']:
+            self.tree1.heading(x, text=x)
+            self.tree1.column(x, width=120)
+        self.tree1.grid(row=2, columnspan=3)
+        for i in range(len(self.bid_data)):
+            self.tree1.insert('', i, values=self.bid_data.iloc[i, :].tolist())
+
+        def beforpage(page, self):
+            if page < 1:
+                messagebox.showerror(title='Error', message='First Page')
+            if len(self.bid_data) - 5 * (page - 1) <= 0:
+                messagebox.showerror(title='Error', message='Last page')
+            if len(self.bid_data) - 5 * (page - 1) >= 5:
+                index = 5 * (page - 1)
+                for i in range(3):
+                    self.tree1.insert('', i, values=self.bid_data.iloc[index + i, :].tolist())
+            else:
+                index = 5 * (page - 1)
+                for i in range(len(self.bid_data) - 5 * (page - 1)):
+                    self.tree1.insert('', i, values=self.bid_data.iloc[index + i, :].tolist())
+                for i in range(5 * page - len(self.bid_data)):
+                    self.tree1.insert('', i, values='')
+
+            self.page -= 1
+
+        def nextpage(page, self):
+
+            if len(self.bid_data) - 5 * (page - 1) <= 0:
+                messagebox.showerror(title='Error', message='Last page')
+            if len(self.bid_data) - 5 * (page - 1) >= 5:
+                index = 5 * (page - 1)
+                for i in range(5):
+                    self.tree1.insert('', i, values=self.bid_data.iloc[index + i, :].tolist())
+            else:
+                index = 5 * (page - 1)
+                for i in range(len(self.bid_data) - 5 * (page - 1)):
+                    self.tree1.insert('', i, values=self.bid_data.iloc[index + i, :].tolist())
+                for i in range(5 * page - len(self.bid_data)):
+                    self.tree1.insert('', i, values='')
+            self.page += 1
+
+    def createBid(self):
+        window_show_receipt = tk.Toplevel(self)
+        window_show_receipt.geometry('600x400+222+111')
+        window_show_receipt.title('Create Bid Order')
+
+        tk.Label(window_show_receipt, text='Create Bid Order').grid(row=0, columnspan=2)
+
+        tk.Label(window_show_receipt, text='Owner Id: ').grid(row=1, column=0)
+        self.entry_orderId = tk.Entry(window_show_receipt)
+        self.entry_orderId.grid(row=1, column=1)
+
+        tk.Label(window_show_receipt, text='Order Name: ').grid(row=2, column=0)
+        self.entry_orderName = tk.Entry(window_show_receipt)
+        self.entry_orderName.grid(row=2, column=1)
+
+        tk.Label(window_show_receipt, text='Order Amount : ').grid(row=3, column=0)
+        self.entry_orderAmount = tk.Entry(window_show_receipt)
+        self.entry_orderAmount.grid(row=3, column=1)
+
+        tk.Label(window_show_receipt, text='Order Price: ').grid(row=4, column=0)
+        self.entry_orderPrice = tk.Entry(window_show_receipt)
+        self.entry_orderPrice.grid(row=4, column=1)
+
+        tk.Button(window_show_receipt, text='Create Bid Order', command=self.createBidfunction).grid(row=5, column=1, pady=40)
+
+    def createBidfunction(self):
+        entry_orderId = self.entry_orderId.get()
+        entry_orderName = self.entry_orderName.get()
+        entry_orderAmount = self.entry_orderAmount.get()
+        entry_orderPrice = self.entry_orderPrice.get()
+        now_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+
+        try:
+            data = pd.read_csv('bid_information.csv', index_col=0)
+        except:
+            data = pd.DataFrame(columns=['owner_id', 'order_name', 'order_amount', 'order_price', 'order_time'])
+        series = {'owner_id': entry_orderId, 'order_name': entry_orderName, 'order_amount': entry_orderAmount, 'order_price': entry_orderPrice, 'order_time': now_time}
+        data = data.append(series, ignore_index=True)
+
+        data.to_csv('bid_information.csv')
+        messagebox.showinfo(title='Results', message='Create Bid Information Successfully')
+
+    # ask ask ask functions
+    def createAsk(self):
+        window_show_receipt = tk.Toplevel(self)
+        window_show_receipt.geometry('600x400+222+111')
+        window_show_receipt.title('Create Ask Order')
+
+        tk.Label(window_show_receipt, text='Create Ask Order').grid(row=0, columnspan=2)
+
+        tk.Label(window_show_receipt, text='Owner Id: ').grid(row=1, column=0)
+        self.entry_orderId = tk.Entry(window_show_receipt)
+        self.entry_orderId.grid(row=1, column=1)
+
+        tk.Label(window_show_receipt, text='Order Name: ').grid(row=2, column=0)
+        self.entry_orderName = tk.Entry(window_show_receipt)
+        self.entry_orderName.grid(row=2, column=1)
+
+        tk.Label(window_show_receipt, text='Order Amount : ').grid(row=3, column=0)
+        self.entry_orderAmount = tk.Entry(window_show_receipt)
+        self.entry_orderAmount.grid(row=3, column=1)
+
+        tk.Label(window_show_receipt, text='Order Price: ').grid(row=4, column=0)
+        self.entry_orderPrice = tk.Entry(window_show_receipt)
+        self.entry_orderPrice.grid(row=4, column=1)
+
+        tk.Button(window_show_receipt, text='Create Ask Order', command=self.createAskfunction).grid(row=5, column=1, pady=40)
+
+    def createAskfunction(self):
+        entry_orderId = self.entry_orderId.get()
+        entry_orderName = self.entry_orderName.get()
+        entry_orderAmount = self.entry_orderAmount.get()
+        entry_orderPrice = self.entry_orderPrice.get()
+        now_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+
+        try:
+            data = pd.read_csv('Ask_information.csv', index_col=0)
+        except:
+            data = pd.DataFrame(columns=['owner_id', 'order_name', 'order_amount', 'order_price', 'order_time'])
+
+        series = {'owner_id': entry_orderId, 'order_name': entry_orderName, 'order_amount': entry_orderAmount, 'order_price': entry_orderPrice, 'order_time': now_time}
+        data = data.append(series, ignore_index=True)
+        print(data)
+        data.to_csv('Ask_information.csv')
+
+        messagebox.showinfo(title='Results', message='Create Ask Information Successfully')
 
 
 class splitReceipt(tk.Frame):
@@ -450,9 +668,10 @@ class splitReceipt(tk.Frame):
         tk.Button(self, text='Split', command=self.sendSpilt).grid(row=11, column=1)
 
     def sendSpilt(self):
-
         entry_old_receipt_id = self.entry_receipt_id.get()
         entry_oldAmount = self.entry_oldAmount.get()
+
+        entry_bool = False if entry_oldAmount == 0 else True
 
         entry_receipt_id = self.entry_newReceiptID.get()
         entry_ownerAddress = self.entry_ownerAddress.get()
@@ -462,6 +681,18 @@ class splitReceipt(tk.Frame):
         entry_settelId = self.entry_settelId.get()
         entry_qualityDate = self.entry_qualityDate.get()
         entry_other_Info = self.entry_other_Info.get()
+
+        result = trd.splitReceipt(
+            [int(entry_old_receipt_id), int(entry_oldAmount), entry_bool, int(entry_receipt_id), str(entry_ownerAddress), int(entry_Commodity_id), int(entry_commodity_weight),
+             int(entry_commodityAmount), int(entry_settelId), int(entry_qualityDate), str(entry_other_Info)])
+
+        if result[0] == 1:
+            messagebox.showinfo(title='Create Result', message='Successfully split receipts \n Old Receipt ID : {} \n New Receipt ID: {}'.format(entry_old_receipt_id, entry_receipt_id))
+        elif result[0] == -1 and result[1] == -1:
+            messagebox.showerror(title='Create Result', message='Fail to create receipts \n Old Receipt ID : {} \n New Receipt ID: {}'.format(entry_old_receipt_id, entry_receipt_id))
+
+        elif result[0] == 0:
+            messagebox.showerror(title='Create Result', message='Fail to create receipts \n Old Receipt ID : {} \n New Receipt ID: {} \n{} \n{} \n{}'.format(entry_old_receipt_id, entry_receipt_id, result[1][0], result[1][1], result[1][2]))
 
 
 def about():
