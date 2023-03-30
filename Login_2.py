@@ -34,7 +34,7 @@ class login(object):
         self.but1 = ttk.Button(self.fr1, text="Login", bootstyle=(INFO, OUTLINE), command=self.usr_log_in)
         self.but1.grid(row=3, column=0, pady=20)
 
-        self.but2 = ttk.Button(self.fr1, text="Sign up", bootstyle=(SUCCESS), command=self.usr_sign_up)
+        self.but2 = ttk.Button(self.fr1, text="Sign up", bootstyle=(INFO, OUTLINE), command=self.usr_sign_up)
         self.but2.grid(row=3, column=1, pady=20)
         self.en1.focus_set()  # 获得焦点
 
@@ -120,7 +120,7 @@ class login(object):
         entry_usr_pwd_confirm.place(x=280, y=180)
 
         # 下面的 sign_to_Hongwei_Website
-        btn_comfirm_sign_up = ttk.Button(window_sign_up, text='Sign up', command=sign_to_Meta_Website)
+        btn_comfirm_sign_up = ttk.Button(window_sign_up, text='Sign up',bootstyle=(INFO, OUTLINE),command=sign_to_Meta_Website)
         btn_comfirm_sign_up.place(x=260, y=240)
 
 
@@ -239,9 +239,9 @@ class getReceiptTrace(tk.Frame):  # 继承Frame类
         txt1.grid(row=1, column=0, pady=20)
         self.en1 = tk.Entry(self, text='Get Receipts Trace')
         self.en1.grid(row=1, column=1, pady=20)
-        self.bt1 = ttk.Button(self, text='Look up', command=self.cmd_receipt)
+        self.bt1 = ttk.Button(self, text='Look up', bootstyle=(INFO, OUTLINE),command=self.cmd_receipt)
         self.bt1.grid(row=2, column=0, pady=20)
-        self.bt2 = ttk.Button(self, text='Show Result', command=self.show_result)
+        self.bt2 = ttk.Button(self, text='Show Result',bootstyle=(INFO, OUTLINE),command=self.show_result)
         self.bt2.grid(row=2, column=1, pady=20)
 
     def cmd_receipt(self):
@@ -258,9 +258,9 @@ class getReceiptTrace(tk.Frame):  # 继承Frame类
             if page > self.index:
                 messagebox.showerror(title='Error', message="Last Page")
             else:
-                tk.Label(window_show_receipt, text='信息: {} \n 操作者地址: {} \n 拥有者信息:{} \n拥有者地址: {} '
-                                                   '\n 存放仓库id: {} \n货品id: {} \n货品重量: {} \n货品数量: {} \n 质检日期: {}'
-                                                   ' \n上链时间: {} \n仓单状态:{} \n 其他信息: {}'.format(page, self.dic_info[page]['owner_address'], self.dic_info[page]['owner_id'],
+                tk.Label(window_show_receipt, text='Information: {} \nOperator_Address: {} \nOwner_Id:{} \nOwner_Address: {} '
+                                                   '\nSettle_Id: {} \nCommodityId: {} \nCommodityWeight: {} \nCommodityAmount: {} \nQuality_Date: {}'
+                                                   ' \nList_Date: {} \nSting_Info: {} \nReceipt_State: {}'.format(page, self.dic_info[page]['operator_address'], self.dic_info[page]['owner_id'],
                                                                                               self.dic_info[page]['owner_address'], self.dic_info[page]['settel_Id'],
                                                                                               self.dic_info[page]['commodityId'],
                                                                                               self.dic_info[page]['commodityWeight'],
@@ -268,18 +268,18 @@ class getReceiptTrace(tk.Frame):  # 继承Frame类
                                                                                               self.dic_info[page]['quality_date'],
                                                                                               self.dic_info[page]['list_date'],
                                                                                               self.dic_info[page]['sting_info'],
-                                                                                              self.dic_info[page]['receipt_state'])).place(x=10, y=10)
+                                                                                              self.dic_info[page]['receipt_state']),justify='left').place(x=110, y=10)
                 self.page += 1
-                tk.Label(window_show_receipt, text='page: {} / {}'.format(self.page, self.index)).place(x=300, y=300)
+                tk.Label(window_show_receipt, text='page: {} / {}'.format(self.page, self.index)).place(x=260, y=300)
 
         def last_info(page):
 
             if page <= 0:
                 messagebox.showerror(title='Error', message="First Page")
             else:
-                tk.Label(window_show_receipt, text='信息: {} \n 操作者地址: {} \n 拥有者信息:{} \n拥有者地址: {} '
-                                                   '\n 存放仓库id: {} \n货品id: {} \n货品重量: {} \n货品数量: {} \n 质检日期: {}'
-                                                   ' \n上链时间: {} \n仓单状态:{} \n 其他信息: {}'.format(page, self.dic_info[page]['owner_address'], self.dic_info[page]['owner_id'],
+                tk.Label(window_show_receipt, text='Information: {} \nOperator_Address: {} \nOwner_Id:{} \nOwner_Address: {} '
+                                                   '\nSettle_Id: {} \nCommodityId: {} \nCommodityWeight: {} \nCommodityAmount: {} \nQuality_Date: {}'
+                                                   ' \nList_Date: {} \nSting_Info: {} \nReceipt_State: {}'.format(page, self.dic_info[page]['operator_address'], self.dic_info[page]['owner_id'],
                                                                                               self.dic_info[page]['owner_address'], self.dic_info[page]['settel_Id'],
                                                                                               self.dic_info[page]['commodityId'],
                                                                                               self.dic_info[page]['commodityWeight'],
@@ -287,10 +287,10 @@ class getReceiptTrace(tk.Frame):  # 继承Frame类
                                                                                               self.dic_info[page]['quality_date'],
                                                                                               self.dic_info[page]['list_date'],
                                                                                               self.dic_info[page]['sting_info'],
-                                                                                              self.dic_info[page]['receipt_state'])).place(x=10, y=10)
+                                                                                              self.dic_info[page]['receipt_state']),justify='left').place(x=110, y=10)
 
                 self.page -= 1
-                tk.Label(window_show_receipt, text='page: {} / {}'.format(self.page, self.index)).place(x=300, y=300)
+                tk.Label(window_show_receipt, text='page: {} / {}'.format(self.page, self.index)).place(x=260, y=300)
 
         if self.dic_info is None:
             messagebox.showerror(title='Results of warehouse receipts', message='No results')
@@ -299,9 +299,9 @@ class getReceiptTrace(tk.Frame):  # 继承Frame类
             window_show_receipt.geometry('600x400+222+111')
             window_show_receipt.title('Results Information')
 
-            tk.Label(window_show_receipt, text='信息: {} \n 操作者地址: {} \n 拥有者信息:{} \n拥有者地址: {} '
-                                               '\n 存放仓库id: {} \n货品id: {} \n货品重量: {} \n货品数量: {} \n 质检日期: {}'
-                                               ' \n上链时间: {} \n仓单状态:{} \n 其他信息: {}'.format(self.page, self.dic_info[self.page]['owner_address'], self.dic_info[self.page]['owner_id'],
+            tk.Label(window_show_receipt, text='Information: {} \nOperator_Address: {} \nOwner_Id:{} \nOwner_Address: {} '
+                                                   '\nSettle_Id: {} \nCommodityId: {} \nCommodityWeight: {} \nCommodityAmount: {} \nQuality_Date: {}'
+                                                   ' \nList_Date: {} \nSting_Info: {} \nReceipt_State: {}'.format(self.page, self.dic_info[self.page]['operator_address'], self.dic_info[self.page]['owner_id'],
                                                                                           self.dic_info[self.page]['owner_address'], self.dic_info[self.page]['settel_Id'],
                                                                                           self.dic_info[self.page]['commodityId'],
                                                                                           self.dic_info[self.page]['commodityWeight'],
@@ -309,14 +309,14 @@ class getReceiptTrace(tk.Frame):  # 继承Frame类
                                                                                           self.dic_info[self.page]['quality_date'],
                                                                                           self.dic_info[self.page]['list_date'],
                                                                                           self.dic_info[self.page]['sting_info'],
-                                                                                          self.dic_info[self.page]['receipt_state'])).place(x=10, y=10)
+                                                                                          self.dic_info[self.page]['receipt_state']),justify='left').place(x=110, y=10)
 
-            button_next = ttk.Button(window_show_receipt, text='Next', command=lambda: next_info(self.page + 1))
-            button_next.place(x=350, y=250)
-            button_before = ttk.Button(window_show_receipt, text='Before', command=lambda: last_info(self.page - 1))
-            button_before.place(x=250, y=250)
+            button_next = ttk.Button(window_show_receipt, text='Next',bootstyle=(INFO, OUTLINE),command=lambda: next_info(self.page + 1))
+            button_next.place(x=310, y=250)
+            button_before = ttk.Button(window_show_receipt, text='Before', bootstyle=(INFO, OUTLINE),command=lambda: last_info(self.page - 1))
+            button_before.place(x=210, y=250)
 
-            tk.Label(window_show_receipt, text='page: {} / {}'.format(self.page, self.index)).place(x=300, y=300)
+            tk.Label(window_show_receipt, text='page: {} / {}'.format(self.page, self.index)).place(x=260, y=300)
 
 
 class create_receipt(tk.Frame):
@@ -349,7 +349,7 @@ class create_receipt(tk.Frame):
         self.entry_commodityAmount = tk.Entry(self)
         self.entry_commodityAmount.grid(row=5, column=1)
 
-        tk.Label(self, text='Settel Id: ').grid(row=6, column=0)
+        tk.Label(self, text='Settle Id: ').grid(row=6, column=0)
         self.entry_settelId = tk.Entry(self)
         self.entry_settelId.grid(row=6, column=1)
 
@@ -363,7 +363,7 @@ class create_receipt(tk.Frame):
         self.entry_other_Info = tk.Entry(self, textvariable=new_create)
         self.entry_other_Info.grid(row=8, column=1)
 
-        ttk.Button(self, text='Create', command=self.sendCreation).grid(row=9, column=1)
+        ttk.Button(self, text='Create',bootstyle=(INFO, OUTLINE),command=self.sendCreation).grid(row=9, column=1)
 
     def sendCreation(self):
 
@@ -396,10 +396,10 @@ class ask_bid(tk.Frame):
 
     def creat_UI(self):
         tk.Label(self, text='Ask and Bid Functions ', font=('microsoft yahei', 20, 'bold')).grid(row=0, columnspan=2)
-        ttk.Button(self, text='Ask Information', command=self.sendAsk).grid(row=1, column=0, pady=50)
-        ttk.Button(self, text='Bid Information', command=self.sendBid).grid(row=1, column=1, pady=50)
-        ttk.Button(self, text='Create Ask Order', command=self.createAsk).grid(row=2, column=0, pady=50)
-        ttk.Button(self, text='Create Bid Order', command=self.createBid).grid(row=2, column=1, pady=50)
+        ttk.Button(self, text='Ask Information', bootstyle=(INFO, OUTLINE),command=self.sendAsk).grid(row=1, column=0, pady=50)
+        ttk.Button(self, text='Bid Information', bootstyle=(INFO, OUTLINE),command=self.sendBid).grid(row=1, column=1, pady=50)
+        ttk.Button(self, text='Create Ask Order',bootstyle=(INFO, OUTLINE),command=self.createAsk).grid(row=2, column=0, pady=50)
+        ttk.Button(self, text='Create Bid Order',bootstyle=(INFO, OUTLINE),command=self.createBid).grid(row=2, column=1, pady=50)
 
     def sendAsk(self):
         self.page = 1
@@ -411,19 +411,19 @@ class ask_bid(tk.Frame):
         try:
             self.ask_data = pd.read_csv('ask_information.csv', index_col=0)
         except:
-            self.ask_data = pd.DataFrame(columns=['order_id', 'order_name', 'order_amount', 'order_price', 'order_time'])
-        self.button2 = tk.Button(window_show_receipt, text='Before', font=('微软雅黑', 12), command=lambda: beforpage(self.page - 1, self))
-        self.button2.grid(row=3, column=0, pady=40)
-        self.button3 = tk.Button(window_show_receipt, text='Next', font=('微软雅黑', 12), command=lambda: nextpage(self.page + 1, self))
-        self.button3.grid(row=3, column=1, pady=40)
+            self.ask_data = pd.DataFrame(columns=['Receipt ID', 'order_name', 'order_amount', 'order_price', 'order_time'])
+        self.button2 = ttk.Button(window_show_receipt, text='Before',bootstyle=(INFO, OUTLINE), command=lambda: beforpage(self.page - 1, self))
+        self.button2.place(x=200,y=200)
+        self.button3 = ttk.Button(window_show_receipt, text='Next',bootstyle=(INFO, OUTLINE), command=lambda: nextpage(self.page + 1, self))
+        self.button3.place(x=340,y=200)
 
         self.tree1 = ttk.Treeview(
             window_show_receipt,  #
             height=5,  # 表格显示的行数
-            columns=['order_id', 'order_name', 'order_amount', 'order_price', 'order_time'],  # 显示的列
+            columns=['Receipt ID', 'order_name', 'order_amount', 'order_price', 'order_time'],  # 显示的列
             show='headings',  # 隐藏首列
         )
-        for x in ['order_id', 'order_name', 'order_amount', 'order_price', 'order_time']:
+        for x in ['Receipt ID', 'order_name', 'order_amount', 'order_price', 'order_time']:
             self.tree1.heading(x, text=x)
             self.tree1.column(x, width=120)
         self.tree1.grid(row=2, columnspan=3)
@@ -467,24 +467,24 @@ class ask_bid(tk.Frame):
     def sendBid(self):
         window_show_receipt = tk.Toplevel(self)
         window_show_receipt.geometry('600x400+222+111')
-        window_show_receipt.title('Ask Information')
+        window_show_receipt.title('Bid Information')
 
         try:
             self.bid_data = pd.read_csv('bid_information.csv', index_col=0)
         except:
-            self.bid_data = pd.DataFrame(columns=['order_id', 'order_name', 'order_amount', 'order_price', 'order_time'])
-        self.button2 = tk.Button(window_show_receipt, text='Before', font=('微软雅黑', 12), command=lambda: beforpage(self.page - 1, self))
-        self.button2.grid(row=3, column=0, pady=40)
-        self.button3 = tk.Button(window_show_receipt, text='Next', font=('微软雅黑', 12), command=lambda: nextpage(self.page + 1, self))
-        self.button3.grid(row=3, column=1, pady=40)
+            self.bid_data = pd.DataFrame(columns=['Receipt ID', 'order_name', 'order_amount', 'order_price', 'order_time'])
+        self.button2 = ttk.Button(window_show_receipt, text='Before', bootstyle=(INFO, OUTLINE), command=lambda: beforpage(self.page - 1, self))
+        self.button2.place(x=200,y=200)
+        self.button3 = ttk.Button(window_show_receipt, text='Next',bootstyle=(INFO, OUTLINE), command=lambda: nextpage(self.page + 1, self))
+        self.button3.place(x=340,y=200)
 
         self.tree1 = ttk.Treeview(
             window_show_receipt,  #
             height=5,  # 表格显示的行数
-            columns=['order_id', 'order_name', 'order_amount', 'order_price', 'order_time'],  # 显示的列
+            columns=['Receipt ID', 'order_name', 'order_amount', 'order_price', 'order_time'],  # 显示的列
             show='headings',  # 隐藏首列
         )
-        for x in ['order_id', 'order_name', 'order_amount', 'order_price', 'order_time']:
+        for x in ['Receipt ID', 'order_name', 'order_amount', 'order_price', 'order_time']:
             self.tree1.heading(x, text=x)
             self.tree1.column(x, width=120)
         self.tree1.grid(row=2, columnspan=3)
@@ -530,25 +530,33 @@ class ask_bid(tk.Frame):
         window_show_receipt.geometry('600x400+222+111')
         window_show_receipt.title('Create Bid Order')
 
-        tk.Label(window_show_receipt, text='Create Bid Order').grid(row=0, columnspan=2)
+        tk.Label(window_show_receipt, text='Create Bid Order',font=('microsoft yahei', 20, 'bold')).place(x=180,y=20)
 
-        tk.Label(window_show_receipt, text='Owner Id: ').grid(row=1, column=0)
+        #tk.Label(window_show_receipt, text='Owner Id: ').grid(row=1, column=0)
+        tk.Label(window_show_receipt, text='Owner Id: ').place(x=160,y=100)
         self.entry_orderId = tk.Entry(window_show_receipt)
-        self.entry_orderId.grid(row=1, column=1)
+        #self.entry_orderId.grid(row=1, column=1)
+        self.entry_orderId.place(x=280,y=100)
 
-        tk.Label(window_show_receipt, text='Order Name: ').grid(row=2, column=0)
+        #tk.Label(window_show_receipt, text='Order Name: ').grid(row=2, column=0)
+        tk.Label(window_show_receipt, text='Owner Name: ').place(x=160, y=140)
         self.entry_orderName = tk.Entry(window_show_receipt)
-        self.entry_orderName.grid(row=2, column=1)
+        #self.entry_orderName.grid(row=2, column=1)
+        self.entry_orderName.place(x=280,y=140)
 
-        tk.Label(window_show_receipt, text='Order Amount : ').grid(row=3, column=0)
+        #tk.Label(window_show_receipt, text='Order Amount : ').grid(row=3, column=0)
+        tk.Label(window_show_receipt, text='Order Amount : ').place(x=160,y=180)
         self.entry_orderAmount = tk.Entry(window_show_receipt)
-        self.entry_orderAmount.grid(row=3, column=1)
+        #self.entry_orderAmount.grid(row=3, column=1)
+        self.entry_orderAmount.place(x=280,y=180)
 
-        tk.Label(window_show_receipt, text='Order Price: ').grid(row=4, column=0)
+        #tk.Label(window_show_receipt, text='Order Price: ').grid(row=4, column=0)
+        tk.Label(window_show_receipt, text='Order Price: ').place(x=160,y=220)
         self.entry_orderPrice = tk.Entry(window_show_receipt)
-        self.entry_orderPrice.grid(row=4, column=1)
+        #self.entry_orderPrice.grid(row=4, column=1)
+        self.entry_orderPrice.place(x=280,y=220)
 
-        tk.Button(window_show_receipt, text='Create Bid Order', command=self.createBidfunction).grid(row=5, column=1, pady=40)
+        ttk.Button(window_show_receipt, text='Create Bid Order',bootstyle=(INFO, OUTLINE),command=self.createBidfunction).place(x=240,y=260)
 
     def createBidfunction(self):
         entry_orderId = self.entry_orderId.get()
@@ -573,25 +581,26 @@ class ask_bid(tk.Frame):
         window_show_receipt.geometry('600x400+222+111')
         window_show_receipt.title('Create Ask Order')
 
-        tk.Label(window_show_receipt, text='Create Ask Order').grid(row=0, columnspan=2)
+        tk.Label(window_show_receipt, text='Create Ask Order',font=('microsoft yahei', 20, 'bold')).place(x=180,y=20)
 
-        tk.Label(window_show_receipt, text='Owner Id: ').grid(row=1, column=0)
+        tk.Label(window_show_receipt, text='Owner Id: ').place(x=160,y=100)
         self.entry_orderId = tk.Entry(window_show_receipt)
-        self.entry_orderId.grid(row=1, column=1)
+        self.entry_orderId.place(x=280,y=100)
 
-        tk.Label(window_show_receipt, text='Order Name: ').grid(row=2, column=0)
+
+        tk.Label(window_show_receipt, text='Order Name: ').place(x=160,y=140)
         self.entry_orderName = tk.Entry(window_show_receipt)
-        self.entry_orderName.grid(row=2, column=1)
+        self.entry_orderName.place(x=280,y=140)
 
-        tk.Label(window_show_receipt, text='Order Amount : ').grid(row=3, column=0)
+        tk.Label(window_show_receipt, text='Order Amount : ').place(x=160,y=180)
         self.entry_orderAmount = tk.Entry(window_show_receipt)
-        self.entry_orderAmount.grid(row=3, column=1)
+        self.entry_orderAmount.place(x=280,y=180)
 
-        tk.Label(window_show_receipt, text='Order Price: ').grid(row=4, column=0)
+        tk.Label(window_show_receipt, text='Order Price: ').place(x=160,y=220)
         self.entry_orderPrice = tk.Entry(window_show_receipt)
-        self.entry_orderPrice.grid(row=4, column=1)
+        self.entry_orderPrice.place(x=280,y=220)
 
-        tk.Button(window_show_receipt, text='Create Ask Order', command=self.createAskfunction).grid(row=5, column=1, pady=40)
+        ttk.Button(window_show_receipt, text='Create Ask Order',bootstyle=(INFO, OUTLINE),command=self.createAskfunction).place(x=240, y=260)
 
     def createAskfunction(self):
         entry_orderId = self.entry_orderId.get()
@@ -621,7 +630,7 @@ class splitReceipt(tk.Frame):
 
     def creat_UI(self):
         tk.Label(self, text='Split Receipts', font=('microsoft yahei', 20, 'bold')).grid(row=0, columnspan=2)
-        tk.Label(self, text='Create Receipts Functions ', font=('microsoft yahei', 20, 'bold')).grid(row=0, columnspan=2)
+        tk.Label(self, text='Split Receipts Functions ', font=('microsoft yahei', 20, 'bold')).grid(row=0, columnspan=2)
 
         tk.Label(self, text='Split Receipt ID: ').grid(row=1, column=0)
         self.entry_receipt_id = tk.Entry(self)
@@ -665,7 +674,7 @@ class splitReceipt(tk.Frame):
         self.entry_other_Info = tk.Entry(self, textvariable=new_create)
         self.entry_other_Info.grid(row=10, column=1)
 
-        tk.Button(self, text='Split', command=self.sendSpilt).grid(row=11, column=1)
+        ttk.Button(self, text='Split',bootstyle=(INFO, OUTLINE),command=self.sendSpilt).grid(row=11, column=1)
 
     def sendSpilt(self):
         entry_old_receipt_id = self.entry_receipt_id.get()
@@ -704,7 +713,7 @@ def about():
     la1.pack(pady=10)
     la2 = tk.Label(top1, text='Contact with us: +852 110')
     la2.pack(pady=10)
-    but1 = ttk.Button(top1, text="  O K  ", command=top1.destroy)
+    but1 = ttk.Button(top1, text="  OK  ",bootstyle=(INFO, OUTLINE),command=top1.destroy)
     but1.pack(side=BOTTOM, pady=10)
 
     top1.attributes("-toolwindow", 1)  # 无最大化，最小化
